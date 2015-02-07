@@ -17,7 +17,7 @@ set softtabstop=2
 
 
 set showmatch           " highlight matching [{()}]
-et number              " show line numbers
+set number              " show line numbers
 set cursorline          " highlight current line
 filetype indent on      " load filetype-specific indent files
 set wildmenu            " visual autocomplete for command menu
