@@ -1,0 +1,11 @@
+[user]
+	name = LukeStorry
+	email = luke@lukestorry.co.uk
+[core]
+	editor = vim
+	autocrlf = input
+
+[color]
+	ui = true
+[branch]
+	autosetuprebase = always
