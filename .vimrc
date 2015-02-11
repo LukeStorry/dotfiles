@@ -1,12 +1,16 @@
 syntax enable
-set background=dark
-"let g:solarized_termcolors=256
-colorscheme solarized
 
+let g:solarized_termcolors=256
 "set t_Co=256 "better colours over ssh?
+
+colorscheme solarized
+set background=dark
+
+
 
 
 map ] :wq <ENTER>
+map \ :w <ENTER>
 
 
 set smartindent
@@ -17,14 +21,14 @@ set softtabstop=2
 
 
 set showmatch           " highlight matching [{()}]
-et number              " show line numbers
+set number              " show line numbers
 set cursorline          " highlight current line
 filetype indent on      " load filetype-specific indent files
 set wildmenu            " visual autocomplete for command menu
-set lazyredraw          " redraw only when we need to.
 
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
+
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 

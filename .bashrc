@@ -1,4 +1,7 @@
-HISTCONTROL=ignoreboth
+
+
+
+set HISTCONTROL=ignoreboth
 
 alias c='clear'			#shortcut
 alias ls='ls --color=tty'	#make ls colourful
@@ -19,6 +22,9 @@ alias c='clear'
 alias h='history'
 
 alias cp='cd ~/Downloads/prog/'
+alias cM='cd ~/Downloads/prog/Matrices'
 
-
-
+alias gc='git commit -m '
+alias gs='git status'
+alias gp='git pull --rebase && git push'
+alias ga='git add'
