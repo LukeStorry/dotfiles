@@ -28,5 +28,5 @@ alias gc='git commit -m '
 alias gs='git status'
 alias gp='git pull --rebase && git push'
 alias ga='git add'
-alias v = 'vim -p *'
+alias v='vim -p *'
 
