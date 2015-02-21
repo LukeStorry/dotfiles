@@ -13,6 +13,9 @@ alias bc='bc -l'                #calculator has maths stuff by default
 alias gogit='git add -A; git commit -a -v -m "another update"; git push origin master'
 alias rm='rm -i'
 alias rome='ssh ls14172@rome.cs.bris.ac.uk'
+alias snowy='ssh ls14172@snowy.cs.bris.ac.uk'
+alias paris='ssh ls14172@paris.cs.bris.ac.uk'
+alias lima='ssh ls14172@lima.cs.bris.ac.uk'
 
 alias ll='ls -alF'
 alias la='ls -A'
@@ -24,7 +27,7 @@ alias h='history'
 alias cP='cd ~/Downloads/prog/'
 alias cM='cd ~/Downloads/prog/Matrices'
 
-alias gc='git commit -m '
+alias gc='git commit -m "'
 alias gs='git status'
 alias gp='git pull --rebase && git push'
 alias ga='git add'
