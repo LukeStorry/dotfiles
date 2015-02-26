@@ -1,5 +1,5 @@
-
-
+eval `ssh-agent`
+ssh-add
 
 set HISTCONTROL=ignoreboth
 
@@ -33,3 +33,5 @@ alias gp='git pull --rebase && git push'
 alias ga='git add'
 alias v='vim -p *'
 
+
+#lias ss='eval `ssh-agent` && 
