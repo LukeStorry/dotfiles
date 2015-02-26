@@ -1,6 +1,6 @@
 [user]
 	name = LukeStorry
-	email = luke@lukestorry.co.uk
+	email = luke.storry@gmail.com
 [core]
 	editor = vim
 	autocrlf = input
@@ -10,7 +10,7 @@
 [branch]
 	autosetuprebase = always
 [credential]
-	helper = cache --timeout=2628000
+	helper = cache --timeout=10000000
 	default = simple
 [push]
 	default = simple
