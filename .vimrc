@@ -10,7 +10,7 @@ set background=dark
 
 
 map ] :wq <ENTER>
-map \ :w <ENTER>
+map } :w <ENTER>
 
 
 set smartindent
@@ -23,7 +23,7 @@ set softtabstop=4
 set showmatch           " highlight matching [{()}]
 set number              " show line numbers
 set cursorline          " highlight current line
-filetype indent on      " load filetype-specific indent files
+"filetype indent on      " load filetype-specific indent files
 set wildmenu            " visual autocomplete for command menu
 
 set incsearch           " search as characters are entered
