@@ -1,2 +1,2 @@
-# personalisation
-A sync of my .vimrc and .bashrc (etc) files
+# dotfile
+A sync of my personalisation files, eg .vimrc and .bashrc (etc)
