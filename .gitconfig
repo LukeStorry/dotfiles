@@ -1,14 +1,18 @@
 [user]
-	name = LukeStorry
-	email = luke.storry@gmail.com
+	name = Luke Storry
+	email = Luke@LukeStorry.co.uk
+
+[push]
+	default = simple
+
+[credential]
+	helper = cache --timeout=100000
+
 [core]
-	editor = vim
-	autocrlf = input
+editor = vim
+autocrlf = input
 
 [color]
 	ui = true
 [branch]
 	autosetuprebase = always
-[credential]
-	helper = cache --timeout=10000000
-	default = simple
