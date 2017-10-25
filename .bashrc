@@ -56,4 +56,16 @@ alias gp='git pull --rebase && git push'
 alias ga='git add'
 
 # make shell only give current folder name
-export PS1="/\W > "
+# export PS1="/\W > "
+
+
+# git integration
+. ~/git-completion.bash
+. ~/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWSTASHSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWCOLORHINTS=1
+export GIT_PS1_SHOWUPSTREAM="verbose, name"
+export PS1="\[\033[1;36m\]-//\W$(__git_ps1 " (%s)")\$\[\033[0m\] "
+
