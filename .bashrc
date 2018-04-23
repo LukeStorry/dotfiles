@@ -45,15 +45,16 @@ alias bc='bc -l'                #calculator has maths stuff by default
 alias gogit='git add -A; git commit -a -v -m "another update"; git push origin master'
 alias rm='rm -i'
 
-alias c='clear'
+alias c='printf'\n\n\n\n\n\n\n\n==========================================================='; clear'
 alias h='history'
-
-alias cdg='cd /media/removable/SD Card/github/'
 
 alias gc='git commit -am "'
 alias gs='git status'
 alias gp='git pull --rebase && git push'
 alias ga='git add'
+alias v='vim -p *'
+alias m='c & make'
+alias b='m & ./Build/*'
 
 # make shell only give current folder name
 # export PS1="/\W > "
