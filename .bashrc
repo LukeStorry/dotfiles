@@ -41,4 +41,5 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 
 # set up thefk
+export PYTHONIOENCODING="utf-8"
 eval $(thefuck --alias fk)
