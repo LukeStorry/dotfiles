@@ -1,7 +1,7 @@
 
 alias c='clear'
 alias ls='ls --color=auto'
-alias l-'ls'
+alias l='ls'
 alias ll='ls -la'
 alias h='history'
 
