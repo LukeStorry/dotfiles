@@ -1,8 +1,8 @@
 PS1='\[\033]0;${PWD#*code/}\007\]' # set window title, minus code dir
 PS1="$PS1"'\n'                 # new line
-PS1="$PS1"'\[\033[36m\]'       # change to cyan
-PS1="$PS1"'\u@\h '             # user@host<space>
-PS1="$PS1"'\[\033[34m\]'       # change to blue
+PS1="$PS1"'\[\033[44m\]'       # change to cyan background
+PS1="$PS1"'\u@\h  '             # user@host<space>
+PS1="$PS1"'\[\033[37;1m\]'     # change text color to bright white
 PS1="$PS1"'\w'                 # current working directory
 if test -z "$WINELOADERNOEXEC"
 then
@@ -12,9 +12,9 @@ then
     COMPLETION_PATH="$COMPLETION_PATH/share/git/completion"
     if test -f "$COMPLETION_PATH/git-prompt.sh"
     then
+        PS1="$PS1"'\[\033[36;1m\]'  # change text color to cyan
         . "$COMPLETION_PATH/git-completion.bash"
         . "$COMPLETION_PATH/git-prompt.sh"
-        PS1="$PS1"'\[\033[92m\]'  # change color to light green
         PS1="$PS1"'`__git_ps1`'   # bash function
     fi
 fi
