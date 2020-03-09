@@ -1,0 +1,69 @@
+{
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "defaultProfile": "{4ae84548-75b3-4082-af6e-90a22a79cc0b}",
+  "initialCols": 120,
+  "initialRows": 30,
+  "requestedTheme": "light",
+  "showTabsInTitlebar": true,
+  "showTerminalTitleInTitlebar": true,
+  "profiles": [
+
+    {
+      "guid": "{c6eaf9f4-32a7-5fdc-b5cf-066e8a4b1e40}",
+      "name": "Ubuntu",
+      "source": "Windows.Terminal.Wsl",
+      "fontFace": "JetBrains Mono",
+      "fontSize": 10,
+      "colorScheme": "Solarized Dark",
+      "hidden": false,
+      "useAcrylic": true,
+      "closeOnExit": "always"
+    },
+    {
+      "name": "Git Bash",
+      "guid": "{4ae84548-75b3-4082-af6e-90a22a79cc0b}",
+      "commandline": "\"C:/Program Files/Git/bin/bash.exe\" -i -l",
+      "fontFace": "JetBrains Mono",
+      "fontSize": 10,
+      "colorScheme": "Solarized Dark",
+      "icon": "%PROGRAMFILES%\\Git\\mingw64\\share\\git\\git-for-windows.ico",
+	  "startingDirectory": "C:\\code",
+      "closeOnExit": "always"
+    },
+    {
+      "name": "PowerShell",
+      "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+      "commandline": "powershell.exe",
+      "closeOnExit": "always"
+    },
+    {
+      "name": "Command Line",
+      "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+      "commandline": "cmd.exe",
+      "icon": "C:\\Windows\\System32\\cmd.exe",
+      "closeOnExit": "always"
+    },
+    {
+      "name": "Azure Cloud Shell",
+      "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+      "hidden": true,
+      "source": "Windows.Terminal.Azure"
+    }
+  ],
+  "schemes": [
+  ],
+  "keybindings": [
+    {"command": "closePane", "keys": [ "ctrl+w" ]    },
+    {"command": "copy", "keys": [ "shift+insert" ]    },
+    {"command": "copy", "keys": [ "ctrl+shift+c" ]    },
+    {"command": "newTab", "keys": [ "ctrl+t" ]    },
+    {"command": "moveFocusLeft", "keys": [ "ctrl+shift+left" ]    },
+    {"command": "moveFocusRight", "keys": [ "ctrl+shift+right" ]    },
+    {"command": "moveFocusUp", "keys": [ "ctrl+shift+up" ]    },
+    {"command": "moveFocusDown", "keys": [ "ctrl+shift+down" ]    },
+    {"command": "splitHorizontal", "keys": [ "ctrl+-" ]    },
+    {"command": "splitVertical", "keys": [ "ctrl+\\"
+    ]
+    }
+  ]
+}
