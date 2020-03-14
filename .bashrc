@@ -1,4 +1,13 @@
 
+# set up home dirs for different systems
+if [ "$(uname)" = 'Linux' ] 
+then
+ export HOME="/mnt/c/code"
+else
+ export HOME="/c/code" 
+ source ~/misc/git-prompt.sh
+fi
+
 # workflow stuff
 alias yy='cdd k E I ; title yarn-k'
 alias c='clear'
@@ -17,6 +26,8 @@ alias pp='prettier ./**/**/**/*.ts* --write'
 alias zz='wsl zsh'
 alias brc='np ~/.bashrc'
 alias sbrc='source ~/.bashrc'
+alias zrc='np ~/.zshrc'
+alias szrc='source ~/.zshrc'
 
 alias t='cmd //c "tree /A" |less'
 alias tf='cmd //c "tree /F /A"|less'
