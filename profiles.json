@@ -9,14 +9,15 @@
   "profiles": [
 
     {
-      "guid": "{c6eaf9f4-32a7-5fdc-b5cf-066e8a4b1e40}",
+      "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
       "name": "Ubuntu",
       "source": "Windows.Terminal.Wsl",
-      "fontFace": "JetBrains Mono",
-      "fontSize": 10,
-      "colorScheme": "Solarized Dark",
+      "fontFace": "Jetbrains Mono",
+      "fontSize": 11,
       "hidden": false,
       "useAcrylic": true,
+      "acrylicOpacity" : 0.9,
+      "colorScheme": "Solarized Dark",
       "closeOnExit": "always"
     },
     {
@@ -25,9 +26,10 @@
       "commandline": "\"C:/Program Files/Git/bin/bash.exe\" -i -l",
       "fontFace": "JetBrains Mono",
       "fontSize": 10,
-      "colorScheme": "Solarized Dark",
+      "useAcrylic": true,
       "icon": "%PROGRAMFILES%\\Git\\mingw64\\share\\git\\git-for-windows.ico",
-	  "startingDirectory": "C:\\code",
+      "acrylicOpacity" : 0.9,
+      "startingDirectory": "C:\\code",
       "closeOnExit": "always"
     },
     {
@@ -37,10 +39,10 @@
       "closeOnExit": "always"
     },
     {
-      "name": "Command Line",
+      "name": "Command",
       "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-      "commandline": "cmd.exe",
-      "icon": "C:\\Windows\\System32\\cmd.exe",
+      "commandline": "cmd.exe",    
+      "icon": "C:\\code\\misc\\cmd.png",
       "closeOnExit": "always"
     },
     {
