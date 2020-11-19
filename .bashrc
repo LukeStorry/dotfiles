@@ -5,7 +5,7 @@ then
  export HOME="/mnt/c/code"
 else
  export HOME="/c/code" 
- source ~/misc/git-prompt.sh
+ # source ~/misc/git-prompt.sh
 fi
 
 # workflow stuff
@@ -17,11 +17,10 @@ alias l='ls'
 alias ll='ls -la'
 alias h='history'
 alias ri='rider.cmd'
+alias pyc='pycharm.cmd'
 alias np='start notepad++'
 alias idea='idea.cmd'
-alias sp='start chrome --app="https://play.spotify.com" --window-position=0,0 --window-size=800,50'
 alias e='explorer'
-alias b='C:/Program\ Files/Git/git-bash.exe &'
 alias pp='prettier ./**/**/**/*.ts* --write'
 alias zz='wsl zsh'
 alias brc='np ~/.bashrc'
@@ -59,7 +58,7 @@ alias gg='git-gui.exe'
 # make escaping directories easy
 alias cd..='cd ..'
 alias ..='cd ..'
-alias ...='cd ../../../'
+alias ...='cd ../../'
 alias cdl='cd /c/Users/LBS'
 
 # cc to replace cd for getting to code files
