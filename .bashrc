@@ -85,13 +85,11 @@ git_stats() {
   if [ $MODIFIED != 0 ]; then
     STATS="$STATS\e[30;103m ~$MODIFIED "
   fi
-  echo -e "\e[0m    \e[97m$STATS\e[49m"
+  echo -e "\e[97;45m`__git_ps1` \e[97m$STATS\e[49m"
 }
-__PS1_BEFORE='\n\n'
-__PS1_USER='\[\e[97;106m\] \u '
-__PS1_LOCATION='\[\e[30;43m\] \w '
-__PS1_GIT_BRANCH='\[\e[97;45m\]`__git_ps1` ' 
+__PS1_USER='\[\e[97;104m\] \u '
+__PS1_LOCATION='\[\e[30;43m\] \w \e[0m   \t   '
 __PS1_GIT_STATS='`git_stats` '
-__PS1_AFTER='\[\e[0m\] \t\n'
+__PS1_AFTER='\[\e[0m\]\n$ '
 
-export PS1="${__PS1_BEFORE}${__PS1_USER}${__PS1_LOCATION}${__PS1_GIT_BRANCH}${__PS1_GIT_STATS}${__PS1_AFTER}"
+export PS1="\n${__PS1_USER}${__PS1_LOCATION}${__PS1_GIT_STATS}${__PS1_AFTER}"
