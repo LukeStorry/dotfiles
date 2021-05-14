@@ -1,41 +1,27 @@
-
-# set up home dirs for different systems
-if [ "$(uname)" = 'Linux' ] 
-then
- export HOME="/mnt/c/code"
-else
- export HOME="/c/code" 
- # source ~/misc/git-prompt.sh
-fi
+export HOME="/c/Users/luke.storry" 
 
 # workflow stuff
-alias yy='cdd k E I ; title yarn-k'
 alias c='clear'
-alias cl='timeout 2 wsl cmatrix; c'
 alias ls='ls --color=auto'
 alias l='ls'
 alias ll='ls -la'
 alias h='history'
+alias e='explorer'
 alias ri='rider.cmd'
 alias pyc='pycharm.cmd'
 alias np='start notepad++'
 alias idea='idea.cmd'
-alias e='explorer'
-alias pp='prettier ./**/**/**/*.ts* --write'
-alias zz='wsl zsh'
-alias brc='np ~/.bashrc'
+alias brc='code ~/.bashrc'
 alias sbrc='source ~/.bashrc'
-alias zrc='np ~/.zshrc'
-alias szrc='source ~/.zshrc'
 
 alias t='cmd //c "tree /A" |less'
 alias tf='cmd //c "tree /F /A"|less'
 
-# bash history settings
-HISTFILE=~/.bash_history
-HISTCONTROL=ignoreboth
-HISTSIZE=1000
-HISTFILESIZE=2000
+# # bash history settings
+# HISTFILE=~/.bash_history
+# HISTCONTROL=ignoreboth
+# HISTSIZE=1000
+# HISTFILESIZE=2000
 
 
 # useful git shortcuts
@@ -52,14 +38,13 @@ alias ga='git commit --amend --no-edit'
 alias gam='git commit --amend -m "'
 alias gres='git reset HEAD --mixed'
 alias gresh='git reset HEAD --hard'
-alias gms='git checkout master && git merge --squash'
 alias gg='git-gui.exe'
 
 # make escaping directories easy
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
-alias cdl='cd /c/Users/LBS'
+alias cdw='cd /c/Users/luke.storry/wamapp'
 
 # cc to replace cd for getting to code files
 cc() {
@@ -83,8 +68,3 @@ function title {
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-
-# set up thefk
-export PYTHONIOENCODING="utf-8"
-eval $(thefuck --alias fk)
