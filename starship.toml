@@ -1,0 +1,32 @@
+
+[[battery.display]] # "bold red" style and discharging_symbol when capacity is between 0% and 10%
+style = "bold red"
+threshold = 30
+
+[[battery.display]] # "bold yellow" style and 💦 symbol when capacity is between 10% and 30%
+discharging_symbol = "💦"
+style = "bold yellow"
+threshold = 50
+
+[[battery.display]]
+style = "green"
+threshold = 100
+
+[battery]
+charging_symbol = "⚡️ "
+discharging_symbol = "📉 "
+empty_symbol = "💀 "
+full_symbol = "🔋 "
+
+[time]
+style = "cyan"
+disabled = false
+
+[status]
+disabled = false
+format = '✗[$symbol $common_meaning$signal_name$maybe_int]✗($style) '
+map_symbol = true
+
+
+[git_branch]
+style = "bold cyan"
