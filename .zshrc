@@ -1,6 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-
 alias szrc='source ~/.zshrc'
 alias zrc='code ~/.zshrc'
 
@@ -9,51 +6,40 @@ alias ls='ls --color=auto'
 alias l='ls'
 alias ll='ls -la'
 alias h='history'
+
+alias prunebranches="git fetch -p; git branch -vv | grep ': gone]' | xargs git branch -D"
+alias gll='git log --pretty=format:"- %s" --reverse -n20'
+alias ..='cd ..'
+alias cd..='cd ..'
+alias ...='cd ../../'
+
+alias eenv='export $(cat .env | grep "^[^#;]" | xargs)'
+alias ds='doppler setup'
+alias dsd='doppler setup -c dev --no-interactive'
+alias dss='doppler setup -c staging --no-interactive'
+alias dsp='doppler setup -c prod --no-interactive'
+alias dr='doppler run --preserve-env -- yarn dev'
+alias yy='nvm use && git pull && yarn && dr'
+alias y='nvm use && dr'
+alias prs="gh api -X GET search/issues -f q='author:@me' | jq -r '\" - \" + (.items | reverse | .[] | .title)'"
+alias prsu="gh api -X GET search/issues -f q='author:@me' | jq -r '\" - \" + (.items | reverse | .[] | [.title,.html_url] | join(\" - \") )'"
+
 alias gs='git status'
 alias gps='git stash; git pull origin main; git stash pop'
 alias gc-='git checkout -'
 alias gp='git pull'
-alias gpom='git checkout main; gp; gc-; git merge main '
+alias gpom='git stash; git checkout main; gp; git stash pop'
 alias gpn='git push --no-verify'
 alias gpf='git push --force-with-lease'
 alias gresh='git reset --hard'
 alias gcl='git clean -n -d -x'
 alias gcli='git clean -i -d -x'
 alias gclf='git clean -f -d -x'
-alias prunebranches="git fetch -p; git branch -vv | grep ': gone]' | xargs git branch -D"
-alias gll='git log --pretty=format:"- %s" --reverse -n20'
-alias ..='cd ..'
-alias cd..='cd ..'
-alias ...='cd ../../'
-alias ds='doppler setup'
-alias dsd='doppler setup -c dev --no-interactive'
-alias dss='doppler setup -c staging --no-interactive'
-alias dsp='doppler setup -c prod --no-interactive'
-alias dr='doppler run --preserve-env -- yarn dev'
-alias eenv='export $(cat .env | grep "^[^#;]" | xargs)'
-alias yy='nvm use && git pull && yarn && dr'
-alias prs="gh api -X GET search/issues -f q='author:@me' | jq -r '\" - \" + (.items | reverse | .[] | .title)'"
-alias prsu="gh api -X GET search/issues -f q='author:@me' | jq -r '\" - \" + (.items | reverse | .[] | [.title,.html_url] | join(\" - \") )'"
-
-alias td='todoist'
-alias tda='todoist q "#LDT today'
-alias tdl='todoist sync; todoist list --filter "#LDT" --priority'
-alias tdla='tdl --filter "due before: tomorrow" --priority'
-alias tdlp='tdl --filter "p1"'
 alias gts='gt sync --no-interactive && gt ss -f'
 alias gpc='gh pr checkout'
 alias gv='gh pr view -w '
 alias gtu='brew update && brew upgrade withgraphite/tap/graphite'
-
-
-stu() {
-  td s; 
-  echo ":arrow_left: Past:";
-  td cl -f "today & #LDT" | sed -En "s/.*#LDT / - /p";
-  echo
-  echo ":arrow_right: Future:";
-  td l -f "(today | tomorrow) & #LDT" | sed -En "s/.*  / - /p";
-}
+alias gtt='gt trunk; gts'
 
 
 function co() {
@@ -90,10 +76,9 @@ gc() {
 }
 
 gtb () {
-  # gt create "$(echo $1 | tr " " - | tr A-Z a-z | tr / - | tr : -)" -m $1 $2 &&\
   gt create -m $1 &&\
   gt ss;
-  # gh pr view -w       
+  gh pr view -w       
 }
 
 gpr() {
@@ -101,9 +86,9 @@ gpr() {
   git stash save $1 &&\
   git checkout main &&\
   git pull &&\
-  git checkout -b $1 &&\
+  git checkout -b "$(echo $1 | tr " " - | tr A-Z a-z | tr / - | tr : -)" &&\
   git stash apply &&\
-  gc "$(echo $1 | tr " " - | tr A-Z a-z | tr / - | tr : -)" &&\
+  gc $1 &&\
   gh pr create -w &&\
 }
 
@@ -111,22 +96,12 @@ export VISUAL=open\ -n\ -b\ "com.microsoft.VSCode"
 export EDITOR="code -w"
 export REACT_EDITOR=code
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-if [ -f ".nvmrc" ]; then
-  nvm use >/dev/null
-fi
-
-# eval "$(github-copilot-cli alias -- "$0")"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(starship init zsh)"
 eval $(thefuck --alias fk)
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
 # Add misc scripts to path
 export PATH="$PATH:$HOME/code/misc/bin"
-
-complete -C '/opt/homebrew/bin/aws_completer' aws
 
 #compdef gt
 ###-begin-gt-completions-###
@@ -150,6 +125,3 @@ compdef _gt_yargs_completions gt
 
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
