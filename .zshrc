@@ -1,3 +1,7 @@
+export PATH="/opt/homebrew/bin:$PATH"
+
+. "$HOME/.cargo/env"
+
 alias szrc='source ~/.zshrc'
 alias zrc='code ~/.zshrc'
 
@@ -8,6 +12,7 @@ alias ll='ls -la'
 alias h='history'
 
 alias prunebranches="git fetch -p; git branch -vv | grep ': gone]' | xargs git branch -D"
+alias rembranches="git branch | grep -v 'main' | xargs git branch -D"
 alias gll='git log --pretty=format:"- %s" --reverse -n20'
 alias ..='cd ..'
 alias cd..='cd ..'
@@ -31,41 +36,36 @@ alias tdlp='tdl --filter "p1"'
 
 alias gs='git status'
 alias gc-='git checkout -'
+alias gls='glab stack'
 alias gp='git pull'
-alias gpom='git stash; git checkout main; gp; git stash pop'
-alias gtma='git stash; git checkout main; git pull; git stash pop; gta'
+alias gcm='git checkout main; git pull'
+alias gpom='git stash; gcm; git stash pop'
+alias gmm='gcm; gc-; git merge main'
+alias grm='gcm; gc-; git rebase main'
+alias gcma='git stash; gcm; git stash pop'
 alias gpn='git push --no-verify'
 alias gpf='git push --force-with-lease'
+alias gpff='git push --force'
 alias gresh='git reset --hard'
 alias gcl='git clean -n -d -x'
 alias gcli='git clean -i -d -x'
 alias gclf='git clean -f -d -x'
-alias gts='gt restack; gt submit -f'
-alias gta='gt create --ai'
-alias gtaa='gt create --ai -a; gt submit --ai'
-alias gpc='gh pr checkout'
-alias gv='gh pr view -w '
-alias gtu='brew update && brew upgrade withgraphite/tap/graphite-beta'
-alias gtt='gt trunk; gt sync --no-interactive -f; gt submit --stack --ai -f'
+alias gpc='glab mr checkout'
+alias gv='glab mr view -w'
+alias gr='glab repo view -w'
+alias gmr='glab mr create -fw'
+alias nrs='rm -rf node_modules && rm -rf pnpm-lock.yaml && pnpm install'
+alias npc='rm -rf pnpm-lock.yaml node_modules; pnpm install'
+alias tyc='npx tsc --noEmit'
+alias p='pnpm'
+alias ch='pnpm changeset; git commit -nam add-changeset && git push'
 
-# WTH is overwriting these?!?
-export LANG=en_GB.UTF-8
-export LC_ALL=en_GB.UTF-8
-export NODE_ENV=
-
-stu() {
-  td s; 
-  echo ":arrow_left: Past:";
-  td cl -f "today & #LDT" | sed -En "s/.*#LDT / - /p";
-  echo
-  echo ":arrow_right: Future:";
-  td l -f "(today | tomorrow) & #LDT" | sed -En "s/.*  / - /p";
-}
-
-# gh api -X GET search/issues -f q='author:@me page:0' | jq -r '.items | .[] | .created_at+","+.title+","+.url' >> prs.csv;
+eval $(thefuck --alias f)
+alias fk='f -y'
+eval "$(starship init zsh)"
 
 function co() {
-  root_paths=(~/code ~/code/backend/services ~/code/misc ~/code/shared/packages)
+  root_paths=(~/Developer ~/Developer/misc)
 
   for root_path in "${root_paths[@]}"; do
     target_directory=$(find "$root_path" -maxdepth 1 -type d -iname "$1*" -print -quit)
@@ -77,10 +77,10 @@ function co() {
     target_directory=$(find "$root_path" -maxdepth 2 -type d -iname "*$1*" -print -quit)
   done
 
-  [ -n "$target_directory" ] &&\
-      echo "Opening directory: $target_directory" &&\
-      code "$target_directory" &&\
-      return
+  [ -n "$target_directory" ] &&
+    echo "Opening directory: $target_directory" &&
+    code "$target_directory" &&
+    return
 
   echo "No matching directory found."
 }
@@ -91,74 +91,49 @@ gc() {
     echo 'On main, not committing!'
     return
   fi
-  git add -A &&\
-  echo 'Committing & pushing...'
-  git commit -nam $1 &&\
-  git push &&\
+  git add -A &&
+    echo 'Committing & pushing...'
+  git commit -nam $1 &&
+    git push
 }
 
-gtb () {
-  gt create -m $1 &&\
-  gt ss -r ;
+gtb() {
+  git checkout -b "$(echo $1 | tr " " - | tr A-Z a-z | tr / - | tr : -)" &&
+    gc $1 &&
+    glab mr create -fw
 }
 
-# gpr() {
-#   git add -A &&\
-#   git stash save $1 &&\
-#   git checkout main &&\
-#   git pull &&\
-#   git checkout -b "$(echo $1 | tr " " - | tr A-Z a-z | tr / - | tr : -)" &&\
-#   git stash apply &&\
-#   gc $1 &&\
-#   gh pr create -w &&\
-# }
+gpr() {
+  git add -A &&
+    git stash save $1 &&
+    git checkout main &&
+    git pull &&
+    git checkout -b "$(echo $1 | tr " " - | tr A-Z a-z | tr / - | tr : -)" &&
+    git stash apply &&
+    gc $1 &&
+    glab mr create -fw
+}
 
-export VISUAL=open\ -n\ -b\ "com.microsoft.VSCode"
-export EDITOR="code -w"
-export REACT_EDITOR=code
+export EDITOR="cursor -w"
+export REACT_EDITOR=cursor
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-if [ -f ".nvmrc" ]; then
-  nvm use >/dev/null
-fi
-
-# eval "$(github-copilot-cli alias -- "$0")"
-eval "$(/opt/homebrew/bin/brew shellenv)"
-eval "$(starship init zsh)"
-eval $(thefuck --alias fk)
+source /opt/homebrew/opt/nvm/nvm.sh
+autoload -U compinit
+compinit
+source <(glab completion -s zsh)
 
 # Add misc scripts to path
-export PATH="$PATH:$HOME/code/misc/bin"
+export PATH="$PATH:$HOME/Developer/misc/bin"
 
-complete -C '/opt/homebrew/bin/aws_completer' aws
+# Add poetry to path
+export PATH="$HOME/.local/bin:$PATH"
+# Make poetry do venvs properly
+poetry config virtualenvs.in-project true
 
-#compdef gt
-###-begin-gt-completions-###
-#
-# yargs command completion script
-#
-# Installation: gt completion >> ~/.zshrc
-#    or gt completion >> ~/.zprofile on OSX.
-#
-_gt_yargs_completions()
-{
-  local reply
-  local si=$IFS
-  IFS=$'
-' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" gt --get-yargs-completions "${words[@]}"))
-  IFS=$si
-  _describe 'values' reply
-}
-compdef _gt_yargs_completions gt
-###-end-gt-completions-###
-
-
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-
-# bun completions
-[ -s "/Users/lukestorry/.bun/_bun" ] && source "/Users/lukestorry/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# pnpm
+export PNPM_HOME="/Users/lukestorry/Library/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
