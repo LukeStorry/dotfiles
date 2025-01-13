@@ -1,3 +1,5 @@
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 export PATH="/opt/homebrew/bin:$PATH"
 
 . "$HOME/.cargo/env"
@@ -11,7 +13,6 @@ alias l='ls'
 alias ll='ls -la'
 alias h='history'
 
-alias prunebranches="git fetch -p; git branch -vv | grep ': gone]' | xargs git branch -D"
 alias rembranches="git branch | grep -v 'main' | xargs git branch -D"
 alias gll='git log --pretty=format:"- %s" --reverse -n20'
 alias ..='cd ..'
@@ -63,6 +64,20 @@ alias ch='pnpm changeset; git commit -nam add-changeset && git push'
 eval $(thefuck --alias f)
 alias fk='f -y'
 eval "$(starship init zsh)"
+
+prune() {
+  git fetch -p
+  for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do
+    git branch -D $branch
+  done
+}
+
+pruneall() {
+  git fetch -p
+  for branch in $(git branch -vv | grep -v '\[origin/' | awk '{print $1}'); do
+    git branch -D $branch
+  done
+}
 
 function co() {
   root_paths=(~/Developer ~/Developer/misc)
@@ -137,3 +152,6 @@ case ":$PATH:" in
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
