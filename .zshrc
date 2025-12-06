@@ -23,12 +23,12 @@ export PRISMA_BINARY_TARGETS='["native"]'
 export NVM_DIR="$HOME/.nvm"
 
 # ============================================================================
-# Completions (lazy loaded where possible)
+# Completions
 # ============================================================================
 fpath=(/Users/lukestorry/.docker/completions $fpath)
 
 # ============================================================================
-# ZSH Plugins (autocomplete, autosuggestions, syntax highlighting)
+# ZSH Plugins
 # ============================================================================
 # Load zsh-autocomplete FIRST (must be before any compdef calls, per README)
 # This replaces compinit and provides enhanced autocomplete
@@ -60,18 +60,14 @@ if [ -f "$HOME/.zsh/plugins/zsh-npm-scripts-autocomplete/zsh-npm-scripts-autocom
 fi
 
 # ============================================================================
-# NVM 
+# NVM & Cargo
 # ============================================================================
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-
-# ============================================================================
-# Cargo (conditional - only if cargo exists)
-# ============================================================================
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # ============================================================================
-# Prompt (starship - keep this as it's needed immediately)
+# Prompt
 # ============================================================================
 eval "$(starship init zsh)"
 
@@ -85,6 +81,11 @@ f() {
   eval $(thefuck --alias f)
   f "$@"
 }
+
+# Initialize zoxide (conditional - only if zoxide is installed)
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init zsh)"
+fi
 
 # Glab completion (conditional - only if glab is installed)
 if command -v glab &> /dev/null; then
@@ -102,6 +103,9 @@ alias ls='ls --color=auto'
 alias l='ls'
 alias ll='ls -la'
 alias h='history'
+if command -v zoxide &> /dev/null; then
+  alias cd='z'
+fi
 
 alias rembranches="git branch | grep -v 'main' | xargs git branch -D"  # Remove branches (all except main)
 alias gll='git log --pretty=format:"- %s" --reverse -n20'  # Git log list (last 20 commits)
