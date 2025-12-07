@@ -30,3 +30,63 @@ map_symbol = true
 
 [git_branch]
 style = "bold cyan"
+
+[aws]
+disabled = true
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+# Git status - shows uncommitted changes, staged files, etc.
+[git_status]
+format = '([\[$all_status\]$ahead_behind]($style) )'
+style = 'cyan'
+conflicted = '$count☠️'
+up_to_date = '✅'
+untracked = '$count🆕'
+ahead = '$count⬆︎ '
+behind = '$count⬇︎ '
+diverged = '$ahead_count⬆︎ $behind_count⬇︎ '
+modified = '$count✏️ '
+staged = '$count💾 '
+renamed = '$count🔀 '
+deleted = '$count🗑️ '
+stashed = ''
+
+# Git state - shows if you're rebasing, merging, etc.
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = 'bold yellow'
+
+# Command duration - shows how long commands took (only if > 2 seconds)
+[cmd_duration]
+min_time = 500
+format = 'took [$duration]($style) '
+style = 'bold yellow'
+
+# Background jobs - shows count of background jobs
+[jobs]
+format = '[$symbol$number]($style) '
+symbol = '✦ '
+style = 'bold blue'
+number_threshold = 1
+
+# Docker context - shows active docker context
+[docker_context]
+format = 'via [$symbol$context]($style) '
+symbol = '🐳 '
+style = 'blue bold'
+only_with_files = true
+detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
+detect_folders = []
+
+# Rust - shows rust version in rust projects
+[rust]
+format = 'via [$symbol($version )]($style)'
+symbol = '🦀 '
+style = 'bold red'
+detect_files = ['Cargo.toml', 'Cargo.lock']
+detect_folders = []
