@@ -31,16 +31,6 @@ map_symbol = true
 [git_branch]
 style = "bold cyan"
 
-[aws]
-disabled = true
-
-[package]
-disabled = true
-
-[nodejs]
-disabled = true
-
-# Git status - shows uncommitted changes, staged files, etc.
 [git_status]
 format = '([\[$all_status\]$ahead_behind]($style) )'
 style = 'cyan'
@@ -56,12 +46,10 @@ renamed = '$count🔀 '
 deleted = '$count🗑️ '
 stashed = ''
 
-# Git state - shows if you're rebasing, merging, etc.
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = 'bold yellow'
 
-# Command duration - shows how long commands took (only if > 2 seconds)
 [cmd_duration]
 min_time = 500
 format = 'took [$duration]($style) '
@@ -74,19 +62,69 @@ symbol = '✦ '
 style = 'bold blue'
 number_threshold = 1
 
-# Docker context - shows active docker context
+
+
+[aws]
+disabled = true
+
+[package]
+disabled = true
+
+[nodejs]
+format = 'with [$symbol(Node$version)]($style)'
+symbol = '🟢'
+style = 'green'
+detect_files = ['package.json', '.node-version']
+detect_folders = ['node_modules']
+
+
 [docker_context]
-format = 'via [$symbol$context]($style) '
-symbol = '🐳 '
-style = 'blue bold'
+format = 'with [$symbol($context)]($style)'
+symbol = '🐳'
+style = 'blue'
 only_with_files = true
 detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
 detect_folders = []
 
-# Rust - shows rust version in rust projects
 [rust]
-format = 'via [$symbol($version )]($style)'
-symbol = '🦀 '
-style = 'bold red'
+format = 'with [$symbol($version)]($style)'
+symbol = '🦀'
+style = 'red'
 detect_files = ['Cargo.toml', 'Cargo.lock']
 detect_folders = []
+
+# Python - shows python version in python projects
+[python]
+format = 'with [$symbol(${pyenv_prefix}${version}${virtualenv})]($style)'
+symbol = '🐍'
+style = 'yellow'
+pyenv_version_name = false
+detect_files = ['.python-version', 'Pipfile', '__pycache__', 'pyproject.toml', 'requirements.txt', 'setup.py', 'tox.ini', '.venv']
+detect_folders = []
+
+# Go - shows go version in go projects
+[golang]
+format = 'with [$symbol(Go $version)]($style)'
+symbol = '🐹'
+style = 'cyan'
+detect_files = ['go.mod', 'go.sum', 'go.work']
+detect_folders = []
+
+# Kubernetes - shows kubectl context
+[kubernetes]
+format = 'with [$symbol(K8s $context $namespace)]($style)'
+symbol = '⛵'
+style = 'green'
+detect_files = []
+detect_folders = ['.kube']
+detect_extensions = []
+
+# Shell - shows current shell
+[shell]
+format = '[$indicator]($style) '
+bash_indicator = 'bsh'
+fish_indicator = 'fsh'
+zsh_indicator = 'zsh'
+style = 'white bold dimmed'
+disabled = true
+
