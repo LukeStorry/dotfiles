@@ -71,7 +71,7 @@ disabled = true
 disabled = true
 
 [nodejs]
-format = 'with [$symbol(Node$version)]($style)'
+format = 'with [$symbol(Node$version)]($style) '
 symbol = '🟢'
 style = 'green'
 detect_files = ['package.json', '.node-version']
@@ -79,7 +79,7 @@ detect_folders = ['node_modules']
 
 
 [docker_context]
-format = 'with [$symbol($context)]($style)'
+format = 'with [$symbol($context)]($style) '
 symbol = '🐳'
 style = 'blue'
 only_with_files = true
@@ -87,7 +87,7 @@ detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
 detect_folders = []
 
 [rust]
-format = 'with [$symbol($version)]($style)'
+format = 'with [$symbol($version)]($style) '
 symbol = '🦀'
 style = 'red'
 detect_files = ['Cargo.toml', 'Cargo.lock']
@@ -95,7 +95,7 @@ detect_folders = []
 
 # Python - shows python version in python projects
 [python]
-format = 'with [$symbol(${pyenv_prefix}${version}${virtualenv})]($style)'
+format = 'with [$symbol(${pyenv_prefix}${version}${virtualenv})]($style) '
 symbol = '🐍'
 style = 'yellow'
 pyenv_version_name = false
@@ -104,7 +104,7 @@ detect_folders = []
 
 # Go - shows go version in go projects
 [golang]
-format = 'with [$symbol(Go $version)]($style)'
+format = 'with [$symbol(Go $version)]($style) '
 symbol = '🐹'
 style = 'cyan'
 detect_files = ['go.mod', 'go.sum', 'go.work']
@@ -112,7 +112,7 @@ detect_folders = []
 
 # Kubernetes - shows kubectl context
 [kubernetes]
-format = 'with [$symbol(K8s $context $namespace)]($style)'
+format = 'with [$symbol(K8s $context $namespace)]($style) '
 symbol = '⛵'
 style = 'green'
 detect_files = []
