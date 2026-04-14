@@ -61,8 +61,8 @@ fi
 
 
 # Alias completions (inherit parent command's completions)
-compdef g=gs
 # compdef p=pnpm
+compdef g=git-spice
 
 zstyle ':completion:*' completer _expand_alias _complete _ignored
 
@@ -139,7 +139,7 @@ alias tdlp='tdl --filter "p1"'  # Todoist: LDT list priority 1
 alias gs='git status'
 alias gc-='git checkout -'  # Git checkout previous branch
 alias gls='glab stack'  # GitLab stack
-alias g='command gs'
+alias g='git-spice'
 alias gp='git pull'
 alias gcm='git checkout main; git pull'  # Git checkout main
 alias gpom='git stash; git checkout main; git pull; git stash pop'  # Git pull on main

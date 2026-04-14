@@ -1,18 +1,52 @@
 [user]
 	name = Luke Storry
-	email = Luke@Storry.uk
-
-[push]
-	default = simple
-
-[credential]
-	helper = cache --timeout=100000
-
+	email = luke.storry@faculty.ai
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	up = spice up
+	down = spice down
+	top = spice top
+	bottom = spice bottom
+	trunk = spice trunk
+	bc = spice branch create
+	bco = spice branch checkout
+	bd = spice branch delete
+	btr = spice branch track
+	brn = spice branch rename
+	bfo = spice branch fold
+	bsq = spice branch squash
+	bdi = spice branch diff
+	bs = spice branch submit
+	br = spice branch restack
+	bon = spice branch onto
+	cc = spice commit create
+	ca = spice commit amend
+	cf = spice commit fixup
+	ss = spice stack submit
+	sr = spice stack restack
+	uss = spice upstack submit
+	usr = spice upstack restack
+	uso = spice upstack onto
+	dss = spice downstack submit
+	ls = spice log short
+	ll = spice log long
+	sync = spice repo sync
+	restack = spice repo restack
+	rbc = spice rebase continue
+	rba = spice rebase abort
+[init]
+	defaultBranch = main
 [core]
-editor = vim
-autocrlf = input
-
-[color]
-	ui = true
-[branch]
-	autosetuprebase = always
+	excludesFile = /Users/lukestorry/.gitignore_global
+[push]
+	autoSetupRemote = true
+[pull]
+	ff = only
+[rerere]
+	enabled = true
+[spice "submit"]
+	navigationComment = multiple
+	navigationCommentSync = downstack
+	assignees = lukestorry
+[spice "checkout"]
+	verbose = true
