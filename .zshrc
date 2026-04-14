@@ -25,7 +25,7 @@ export NVM_DIR="$HOME/.nvm"
 # ============================================================================
 # Completions
 # ============================================================================
-fpath=(/Users/lukestorry/.docker/completions $fpath)
+fpath=(~/.zfunc /Users/lukestorry/.docker/completions $fpath)
 
 # ============================================================================
 # ZSH Plugins
@@ -59,11 +59,21 @@ if [ -f "$HOME/.zsh/plugins/zsh-npm-scripts-autocomplete/zsh-npm-scripts-autocom
   bindkey -M menuselect '^M' .accept-line 2>/dev/null
 fi
 
+
+# Alias completions (inherit parent command's completions)
+compdef g=gs
+# compdef p=pnpm
+
+zstyle ':completion:*' completer _expand_alias _complete _ignored
+
+
 # ============================================================================
 # NVM & Cargo
 # ============================================================================
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+# Activate default Node version so node is available in PATH
+[ -s "$NVM_DIR/alias/default" ] && nvm use default --silent >/dev/null 2>&1
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # ============================================================================
@@ -103,16 +113,16 @@ alias ls='ls --color=auto'
 alias l='ls'
 alias ll='ls -la'
 alias h='history'
-if command -v zoxide &> /dev/null; then
-  alias cd='z'
-fi
+# if command -v zoxide &> /dev/null; then
+#   alias cd='z'
+# fi
 
 alias rembranches="git branch | grep -v 'main' | xargs git branch -D"  # Remove branches (all except main)
 alias gll='git log --pretty=format:"- %s" --reverse -n20'  # Git log list (last 20 commits)
 alias ..='cd ..'
 alias cd..='cd ..'
 alias ...='cd ../../'
-alias eenv='set -a; source <(cat .env | grep "^[^#;]"); set +a'  # Export env vars from .env file
+alias eenv='set -a; source <(cat .env.local | grep "^[^#;]"); set +a'  # Export env vars from .env file
 
 alias yy='nvm use && git pull && yarn && dr'  # Yarn (use node, pull, yarn install, dev run)
 alias y='nvm use && dr'  # Yarn quick (use node, dev run)
@@ -129,13 +139,14 @@ alias tdlp='tdl --filter "p1"'  # Todoist: LDT list priority 1
 alias gs='git status'
 alias gc-='git checkout -'  # Git checkout previous branch
 alias gls='glab stack'  # GitLab stack
-alias g='git-branchless'
+alias g='command gs'
 alias gp='git pull'
 alias gcm='git checkout main; git pull'  # Git checkout main
 alias gpom='git stash; git checkout main; git pull; git stash pop'  # Git pull on main
 alias gpod='git stash; git checkout - && git stash pop'  # Git pull on dev (previous branch)
 alias gmm='gcm; gc-; git merge main'  # Git merge main
-alias grm='gcm; gc-; git rebase main'  # Git rebase main
+alias grm='git fetch origin main; git rebase origin/main'  # Git rebase main (works in worktrees)
+alias grs='git fetch origin dmx/ds-migration; git rebase origin/dmx/ds-migration'  # Git rebase ds-migration (works in worktrees)
 alias gcma='git stash; gcm; git stash pop'  # Git checkout main (with stash)
 alias gpn='git push --no-verify'  # Git push no-verify (skip hooks)
 alias gpf='git push --force-with-lease'  # Git push force (safer)
@@ -169,11 +180,21 @@ alias fk='f -y'  # f yes (auto-confirm)
 # Functions
 # ============================================================================
 
+
 # Prune: Delete local branches that track remote branches that no longer exist
+# Prune: Delete local branches whose remote is gone or that are merged into origin/main
 prune() {
   git fetch -p
-  for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do
-    git branch -D $branch
+  local current=$(git branch --show-current)
+  # Delete branches whose remote tracking branch is gone
+  for branch in $(git branch -vv | grep ': gone]' | awk '{gsub(/^[* +]+/, ""); print $1}'); do
+    [[ "$branch" == "$current" ]] && continue
+    git branch -D "$branch" 2>/dev/null || echo "Skipping $branch (checked out in worktree?)"
+  done
+  # Delete branches merged into origin/main
+  for branch in $(git branch --merged origin/main | awk '{gsub(/^[* +]+/, ""); print $1}'); do
+    [[ "$branch" == "main" || "$branch" == "$current" ]] && continue
+    git branch -d "$branch" 2>/dev/null || echo "Skipping $branch (checked out in worktree?)"
   done
 }
 
@@ -249,6 +270,7 @@ gpr() {
     git stash apply &&
     gtb $1 $2 
 }
+
 
 # ============================================================================
 # Optional: Load local overrides (for machine-specific configs)
