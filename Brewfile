@@ -28,11 +28,10 @@ brew "withgraphite/tap/graphite"   # graphite (gt)
 brew "nvm"            # Node version manager (default node activated in zshrc)
 brew "pnpm"
 brew "yarn"
-brew "python@3.10"    # project default (see CLAUDE.md)
+brew "uv"             # Python: install interpreters (`uv python install`) + manage venvs — no brew python
 brew "rust"
 brew "rustup"
 brew "ruff"           # Python lint/format
-brew "mypy"           # Python type checker
 brew "pre-commit"
 
 # ── Cloud / infra / containers ───────────────────────────────────────────────

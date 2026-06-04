@@ -78,11 +78,19 @@ What each one gives you:
 
 (Directory jumping is `zoxide`'s `z`, installed via the Brewfile — no fzf.)
 
-### 6. Node (nvm) + Rust
+### 6. Node (nvm), Rust, Python (uv)
 
 ```bash
 nvm install --lts && nvm alias default 'lts/*'   # .zshrc auto-activates the default
 rustup-init -y                                   # if not already set up by brew
+```
+
+Python is managed by **uv** (installed via the Brewfile), not `brew install python@*`.
+uv installs interpreters on demand — projects with a `.python-version` get the right
+one automatically via `uv sync`/`uv run`. To pre-install the common version:
+
+```bash
+uv python install 3.10          # frontier-platform default
 ```
 
 ### 7. Machine-local secrets — `~/.zshrc.local`
