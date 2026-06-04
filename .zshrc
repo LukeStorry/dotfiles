@@ -4,6 +4,7 @@
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$HOME/Developer/misc/bin"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # pnpm
 export PNPM_HOME="/Users/lukestorry/Library/pnpm"
