@@ -15,8 +15,8 @@ esac
 # ============================================================================
 # Environment Variables
 # ============================================================================
-export EDITOR="cursor -w"
-export REACT_EDITOR=cursor
+export EDITOR="code -w"
+export REACT_EDITOR=code
 export PRISMA_BINARY_TARGETS='["native"]'
 
 # NVM Configuration (set once, loaded lazily)
@@ -62,7 +62,7 @@ fi
 
 # Alias completions (inherit parent command's completions)
 # compdef p=pnpm
-compdef g=git-spice
+compdef gs=git-spice
 
 zstyle ':completion:*' completer _expand_alias _complete _ignored
 
@@ -136,15 +136,16 @@ alias tdl='todoist sync; todoist list --filter "#LDT" --priority'  # Todoist: LD
 alias tdla='tdl --filter "due before: tomorrow" --priority'  # Todoist: LDT list active (due before tomorrow)
 alias tdlp='tdl --filter "p1"'  # Todoist: LDT list priority 1
 
-alias gs='git status'
+alias gst='git status'
 alias gc-='git checkout -'  # Git checkout previous branch
 alias gls='glab stack'  # GitLab stack
-alias g='git-spice'
+alias g='git'
+alias gs='git-spice'
 alias gp='git pull'
 alias gcm='git checkout main; git pull'  # Git checkout main
 alias gpom='git stash; git checkout main; git pull; git stash pop'  # Git pull on main
 alias gpod='git stash; git checkout - && git stash pop'  # Git pull on dev (previous branch)
-alias gmm='gcm; gc-; git merge main'  # Git merge main
+alias gmm='git fetch origin main; git merge origin/main'  # Git merge main
 alias grm='git fetch origin main; git rebase origin/main'  # Git rebase main (works in worktrees)
 alias grs='git fetch origin dmx/ds-migration; git rebase origin/dmx/ds-migration'  # Git rebase ds-migration (works in worktrees)
 alias gcma='git stash; gcm; git stash pop'  # Git checkout main (with stash)
@@ -165,6 +166,7 @@ alias nrs='rm -rf node_modules && rm -rf pnpm-lock.yaml && pnpm install'  # Node
 alias npc='rm -rf pnpm-lock.yaml node_modules; pnpm install'  # Node pnpm clean
 alias python='python3'
 alias tyc='npx tsc --noEmit'  # TypeScript check (type check only)
+alias pv='pnpm view @facultyai/dmx-console versions --json'
 alias p='pnpm'
 alias pi='pnpm install'
 alias pii='pnpm install --ignore-scripts'  # Pnpm install ignore scripts
@@ -173,7 +175,7 @@ alias d='pnpm install; p dev; p watch'  # Dev (install, dev, watch)
 alias dx='pnpm dlx @facultyai/dmx-cli'  # DMX CLI
 alias dxi='pnpm dlx @facultyai/dmx-cli install'  # DMX CLI install
 alias dxc='pnpm dlx @facultyai/dmx-cli clean'  # DMX CLI clean
-
+alias cdd='cd dmx/packages/dmx-console'  # CD DMX console
 alias fk='f -y'  # f yes (auto-confirm)
 
 # ============================================================================
