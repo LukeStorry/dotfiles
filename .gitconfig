@@ -37,7 +37,7 @@
 [init]
 	defaultBranch = main
 [core]
-	excludesFile = /Users/lukestorry/.gitignore_global
+	excludesFile = ~/.gitignore_global
 [push]
 	autoSetupRemote = true
 [pull]

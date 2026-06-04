@@ -1,0 +1,562 @@
+#compdef git-spice
+
+_git-spice() {
+  local -a global_flags
+  global_flags=(
+    '(-h --help)'{-h,--help}'[Show help]'
+    '--version[Print version]'
+    '(-v --verbose)'{-v,--verbose}'[Enable verbose output]'
+    '(-C --dir)'{-C,--dir}'[Change directory]:dir:_directories'
+    '--prompt[Prompt for missing info]'
+    '--no-prompt[Do not prompt]'
+  )
+
+  # --- Top-level commands ---
+  local -a toplevel_commands
+  toplevel_commands=(
+    'version:Print version information and quit'
+    'shell:Shell utilities'
+    'auth:Authentication commands'
+    'repo:Repository commands'
+    'r:Repository commands'
+    'log:Log commands'
+    'l:Log commands'
+    'stack:Stack commands'
+    's:Stack commands'
+    'upstack:Upstack commands'
+    'us:Upstack commands'
+    'downstack:Downstack commands'
+    'ds:Downstack commands'
+    'branch:Branch commands'
+    'b:Branch commands'
+    'commit:Commit commands'
+    'c:Commit commands'
+    'rebase:Rebase commands'
+    'rb:Rebase commands'
+    'up:Move up one branch'
+    'u:Move up one branch'
+    'down:Move down one branch'
+    'd:Move down one branch'
+    'top:Move to top of stack'
+    'U:Move to top of stack'
+    'bottom:Move to bottom of stack'
+    'D:Move to bottom of stack'
+    'trunk:Move to trunk branch'
+  )
+
+  _arguments -C \
+    "${global_flags[@]}" \
+    '1:command:->toplevel' \
+    '*::arg:->subcmd'
+
+  case $state in
+    toplevel)
+      _describe -t commands 'git-spice command' toplevel_commands
+      ;;
+    subcmd)
+      case $words[1] in
+        branch|b)     _git_spice_branch ;;
+        commit|c)     _git_spice_commit ;;
+        stack|s)      _git_spice_stack ;;
+        upstack|us)   _git_spice_upstack ;;
+        downstack|ds) _git_spice_downstack ;;
+        repo|r)       _git_spice_repo ;;
+        log|l)        _git_spice_log ;;
+        rebase|rb)    _git_spice_rebase ;;
+        auth)         _git_spice_auth ;;
+        shell)        _git_spice_shell ;;
+        up|u)         _arguments "${global_flags[@]}" '1:count:' '(-n --dry-run)'{-n,--dry-run}'[Print target without checking out]' '--detach[Detach HEAD]' ;;
+        down|d)       _arguments "${global_flags[@]}" '1:count:' '(-n --dry-run)'{-n,--dry-run}'[Print target without checking out]' '--detach[Detach HEAD]' ;;
+        top|U)        _arguments "${global_flags[@]}" '(-n --dry-run)'{-n,--dry-run}'[Print target without checking out]' '--detach[Detach HEAD]' ;;
+        bottom|D)     _arguments "${global_flags[@]}" '(-n --dry-run)'{-n,--dry-run}'[Print target without checking out]' '--detach[Detach HEAD]' ;;
+        trunk)        _arguments "${global_flags[@]}" '(-n --dry-run)'{-n,--dry-run}'[Print target without checking out]' '--detach[Detach HEAD]' ;;
+      esac
+      ;;
+  esac
+}
+
+# --- branch ---
+_git_spice_branch() {
+  local -a branch_commands
+  branch_commands=(
+    'track:Track a branch'
+    'tr:Track a branch'
+    'untrack:Forget a tracked branch'
+    'untr:Forget a tracked branch'
+    'checkout:Switch to a branch'
+    'co:Switch to a branch'
+    'create:Create a new branch'
+    'c:Create a new branch'
+    'delete:Delete branches'
+    'd:Delete branches'
+    'rm:Delete branches'
+    'fold:Merge a branch into its base'
+    'fo:Merge a branch into its base'
+    'split:Split a branch on commits'
+    'sp:Split a branch on commits'
+    'squash:Squash a branch into one commit'
+    'sq:Squash a branch into one commit'
+    'edit:Edit commits in a branch'
+    'e:Edit commits in a branch'
+    'rename:Rename a branch'
+    'rn:Rename a branch'
+    'mv:Rename a branch'
+    'restack:Restack a branch'
+    'r:Restack a branch'
+    'onto:Move a branch onto another'
+    'on:Move a branch onto another'
+    'diff:Show diff between branch and base'
+    'di:Show diff between branch and base'
+    'submit:Submit a branch'
+    's:Submit a branch'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'branch command' branch_commands
+      ;;
+    args)
+      case $words[1] in
+        create|c)
+          _arguments \
+            '1:name:' \
+            '--insert[Restack upstack onto new branch]' \
+            '--below[Place branch below target]' \
+            '(-t --target)'{-t,--target}'[Base branch]:branch:__git_spice_branches' \
+            '(-a --all)'{-a,--all}'[Stage modified and deleted files]' \
+            '(-m --message)'{-m,--message}'[Commit message]:message:' \
+            '--no-verify[Bypass pre-commit hooks]' \
+            '--signoff[Add Signed-off-by trailer]' \
+            '--commit[Commit staged changes]' \
+            '--no-commit[Do not commit]'
+          ;;
+        checkout|co)
+          _arguments \
+            '1:branch:__git_spice_branches' \
+            '(-n --dry-run)'{-n,--dry-run}'[Print target without checking out]' \
+            '--detach[Detach HEAD]' \
+            '(-u --untracked)'{-u,--untracked}'[Show untracked branches]'
+          ;;
+        delete|d|rm)
+          _arguments \
+            '*:branch:__git_spice_branches' \
+            '--force[Force deletion]'
+          ;;
+        track|tr)
+          _arguments \
+            '1:branch:__git_branches' \
+            '(-b --base)'{-b,--base}'[Base branch]:branch:__git_spice_branches'
+          ;;
+        untrack|untr)
+          _arguments '1:branch:__git_spice_branches'
+          ;;
+        fold|fo)
+          _arguments '--branch[Branch to fold]:branch:__git_spice_branches'
+          ;;
+        split|sp)
+          _arguments \
+            '*--at[Commit to split at (COMMIT\:NAME)]:split:' \
+            '--branch[Branch to split]:branch:__git_spice_branches'
+          ;;
+        squash|sq)
+          _arguments \
+            '--no-verify[Bypass pre-commit hooks]' \
+            '--no-edit[Do not open editor]' \
+            '(-m --message)'{-m,--message}'[Commit message]:message:' \
+            '--branch[Branch to squash]:branch:__git_spice_branches'
+          ;;
+        edit|e) ;;
+        rename|rn|mv)
+          _arguments '1:old name:__git_spice_branches' '2:new name:'
+          ;;
+        restack|r)
+          _arguments '--branch[Branch to restack]:branch:__git_spice_branches'
+          ;;
+        onto|on)
+          _arguments \
+            '1:onto:__git_spice_branches' \
+            '--branch[Branch to move]:branch:__git_spice_branches'
+          ;;
+        diff|di)
+          _arguments '--branch[Branch to diff]:branch:__git_spice_branches'
+          ;;
+        submit|s) _git_spice_submit_flags ;;
+      esac
+      ;;
+  esac
+}
+
+# --- commit ---
+_git_spice_commit() {
+  local -a commit_commands
+  commit_commands=(
+    'create:Create a new commit'
+    'c:Create a new commit'
+    'amend:Amend the current commit'
+    'a:Amend the current commit'
+    'split:Split the current commit'
+    'sp:Split the current commit'
+    'fixup:Fixup a commit below current'
+    'f:Fixup a commit below current'
+    'pick:Cherry-pick a commit'
+    'p:Cherry-pick a commit'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'commit command' commit_commands
+      ;;
+    args)
+      case $words[1] in
+        create|c)
+          _arguments \
+            '(-a --all)'{-a,--all}'[Stage all changes]' \
+            '--allow-empty[Allow empty commit]' \
+            '--fixup[Create fixup commit]:commit:' \
+            '(-m --message)'{-m,--message}'[Commit message]:message:' \
+            '--no-verify[Bypass hooks]' \
+            '--signoff[Add Signed-off-by trailer]'
+          ;;
+        amend|a)
+          _arguments \
+            '(-a --all)'{-a,--all}'[Stage all changes]' \
+            '--allow-empty[Allow empty commit]' \
+            '(-m --message)'{-m,--message}'[Commit message]:message:' \
+            '--no-edit[Do not open editor]' \
+            '--no-verify[Bypass hooks]' \
+            '--signoff[Add Signed-off-by trailer]'
+          ;;
+        split|sp)
+          _arguments \
+            '(-m --message)'{-m,--message}'[Commit message]:message:' \
+            '--no-verify[Bypass hooks]'
+          ;;
+        fixup|f)
+          _arguments '1:commit:'
+          ;;
+        pick|p)
+          _arguments \
+            '1:commit:' \
+            '--from[Branch to pick from]:branch:__git_spice_branches'
+          ;;
+      esac
+      ;;
+  esac
+}
+
+# --- stack ---
+_git_spice_stack() {
+  local -a stack_commands
+  stack_commands=(
+    'submit:Submit a stack'
+    's:Submit a stack'
+    'restack:Restack a stack'
+    'r:Restack a stack'
+    'edit:Edit order of branches'
+    'e:Edit order of branches'
+    'delete:Delete all branches in stack'
+    'd:Delete all branches in stack'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'stack command' stack_commands
+      ;;
+    args)
+      case $words[1] in
+        submit|s) _git_spice_submit_flags ;;
+        restack|r)
+          _arguments '--branch[Branch]:branch:__git_spice_branches'
+          ;;
+        edit|e)
+          _arguments \
+            '--editor[Editor]:editor:' \
+            '--branch[Branch]:branch:__git_spice_branches'
+          ;;
+        delete|d)
+          _arguments '--force[Force deletion]'
+          ;;
+      esac
+      ;;
+  esac
+}
+
+# --- upstack ---
+_git_spice_upstack() {
+  local -a upstack_commands
+  upstack_commands=(
+    'submit:Submit branch and those above'
+    's:Submit branch and those above'
+    'restack:Restack branch and upstack'
+    'r:Restack branch and upstack'
+    'onto:Move branch onto another'
+    'o:Move branch onto another'
+    'delete:Delete all branches above'
+    'd:Delete all branches above'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'upstack command' upstack_commands
+      ;;
+    args)
+      case $words[1] in
+        submit|s) _git_spice_submit_flags ;;
+        restack|r)
+          _arguments \
+            '--skip-start[Skip starting branch]' \
+            '--branch[Branch]:branch:__git_spice_branches'
+          ;;
+        onto|o)
+          _arguments \
+            '1:onto:__git_spice_branches' \
+            '--branch[Branch to move]:branch:__git_spice_branches'
+          ;;
+        delete|d)
+          _arguments '--force[Force deletion]'
+          ;;
+      esac
+      ;;
+  esac
+}
+
+# --- downstack ---
+_git_spice_downstack() {
+  local -a downstack_commands
+  downstack_commands=(
+    'track:Track untracked branches below'
+    'tr:Track untracked branches below'
+    'submit:Submit branch and those below'
+    's:Submit branch and those below'
+    'edit:Edit order of branches below'
+    'e:Edit order of branches below'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'downstack command' downstack_commands
+      ;;
+    args)
+      case $words[1] in
+        track|tr)
+          _arguments '1:branch:__git_branches'
+          ;;
+        submit|s) _git_spice_submit_flags ;;
+        edit|e)
+          _arguments \
+            '--editor[Editor]:editor:' \
+            '--branch[Branch]:branch:__git_spice_branches'
+          ;;
+      esac
+      ;;
+  esac
+}
+
+# --- repo ---
+_git_spice_repo() {
+  local -a repo_commands
+  repo_commands=(
+    'init:Initialize a repository'
+    'i:Initialize a repository'
+    'sync:Pull latest changes from remote'
+    's:Pull latest changes from remote'
+    'restack:Restack all tracked branches'
+    'r:Restack all tracked branches'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'repo command' repo_commands
+      ;;
+    args)
+      case $words[1] in
+        init|i)
+          _arguments \
+            '--trunk[Trunk branch]:branch:__git_branches' \
+            '--remote[Remote name]:remote:__git_remotes' \
+            '--reset[Forget all information]'
+          ;;
+        sync|s)
+          _arguments '--restack[Restack current stack after sync]'
+          ;;
+        restack|r) ;;
+      esac
+      ;;
+  esac
+}
+
+# --- log ---
+_git_spice_log() {
+  local -a log_commands
+  log_commands=(
+    'short:List branches'
+    's:List branches'
+    'long:List branches and commits'
+    'l:List branches and commits'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'log command' log_commands
+      ;;
+    args)
+      _arguments \
+        '(-a --all)'{-a,--all}'[Show all tracked branches]' \
+        '(-S --cr-status --no-cr-status)'{-S,--cr-status}'[Include CR status]' \
+        '(-c --cr-comments --no-cr-comments)'{-c,--cr-comments}'[Include CR comment counts]' \
+        '--json[Output as JSON]'
+      ;;
+  esac
+}
+
+# --- rebase ---
+_git_spice_rebase() {
+  local -a rebase_commands
+  rebase_commands=(
+    'continue:Continue an interrupted operation'
+    'c:Continue an interrupted operation'
+    'abort:Abort an operation'
+    'a:Abort an operation'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'rebase command' rebase_commands
+      ;;
+    args)
+      case $words[1] in
+        continue|c)
+          _arguments \
+            '--edit[Open editor]' \
+            '--no-edit[Do not open editor]'
+          ;;
+        abort|a) ;;
+      esac
+      ;;
+  esac
+}
+
+# --- auth ---
+_git_spice_auth() {
+  local -a auth_commands
+  auth_commands=(
+    'login:Log in to a service'
+    'status:Show current login status'
+    'logout:Log out of a service'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'auth command' auth_commands
+      ;;
+  esac
+}
+
+# --- shell ---
+_git_spice_shell() {
+  local -a shell_commands
+  shell_commands=(
+    'completion:Generate shell completion script'
+  )
+
+  _arguments -C \
+    '1:subcommand:->sub' \
+    '*::arg:->args'
+
+  case $state in
+    sub)
+      _describe -t commands 'shell command' shell_commands
+      ;;
+    args)
+      case $words[1] in
+        completion)
+          _arguments '1:shell:(bash zsh fish)'
+          ;;
+      esac
+      ;;
+  esac
+}
+
+# --- Shared submit flags ---
+_git_spice_submit_flags() {
+  _arguments \
+    '(-n --dry-run)'{-n,--dry-run}'[Do not actually submit]' \
+    '(-c --fill)'{-c,--fill}'[Fill title/body from commits]' \
+    '--draft[Mark as draft]' \
+    '--no-draft[Do not mark as draft]' \
+    '--publish[Create CRs for pushed branches]' \
+    '--no-publish[Do not create CRs]' \
+    '(-w --web)'{-w,--web}'[Open in web browser]' \
+    '--no-web[Do not open browser]' \
+    '--nav-comment[Navigation comment (true/false/multiple)]:mode:(true false multiple)' \
+    '--force[Force push]' \
+    '--no-verify[Bypass pre-push hooks]' \
+    '(-u --update-only --no-update-only)'{-u,--update-only}'[Only update existing CRs]' \
+    '*'{-l,--label}'[Add label]:label:' \
+    '*'{-r,--reviewer}'[Add reviewer]:reviewer:' \
+    '*'{-a,--assign}'[Assign to user]:assignee:' \
+    '--title[CR title]:title:' \
+    '--body[CR body]:body:' \
+    '--branch[Branch]:branch:__git_spice_branches'
+}
+
+# --- Branch completion helpers ---
+__git_spice_branches() {
+  local -a branches
+  branches=(${(f)"$(git-spice ls --json 2>/dev/null | sed -n 's/.*"name":"\([^"]*\)".*/\1/p')"})
+  if [[ -z "$branches" ]]; then
+    branches=(${(f)"$(git branch --format='%(refname:short)' 2>/dev/null)"})
+  fi
+  _describe -t branches 'branch' branches
+}
+
+__git_branches() {
+  local -a branches
+  branches=(${(f)"$(git branch --format='%(refname:short)' 2>/dev/null)"})
+  _describe -t branches 'branch' branches
+}
+
+__git_remotes() {
+  local -a remotes
+  remotes=(${(f)"$(git remote 2>/dev/null)"})
+  _describe -t remotes 'remote' remotes
+}
+
+compdef _git-spice git-spice
+compdef _git-spice g

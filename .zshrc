@@ -7,7 +7,7 @@ export PATH="$PATH:$HOME/Developer/misc/bin"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/lukestorry/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -26,7 +26,7 @@ export NVM_DIR="$HOME/.nvm"
 # ============================================================================
 # Completions
 # ============================================================================
-fpath=(~/.zfunc /Users/lukestorry/.docker/completions $fpath)
+fpath=(~/.zfunc ~/.docker/completions $fpath)
 
 # ============================================================================
 # ZSH Plugins
@@ -34,30 +34,30 @@ fpath=(~/.zfunc /Users/lukestorry/.docker/completions $fpath)
 # Load zsh-autocomplete FIRST (must be before any compdef calls, per README)
 # This replaces compinit and provides enhanced autocomplete
 if [ -d "$HOME/.zsh/plugins/zsh-autocomplete" ]; then
-  source "$HOME/.zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" 2>/dev/null
+  source "$HOME/.zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 fi
 
 # Load fast-syntax-highlighting (must be before prompt)
 if [ -d "$HOME/.zsh/plugins/fast-syntax-highlighting" ]; then
-  source "$HOME/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" 2>/dev/null
+  source "$HOME/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 fi
 
 # Load zsh-autosuggestions (command suggestions based on history)
 if [ -d "$HOME/.zsh/plugins/zsh-autosuggestions" ]; then
-  source "$HOME/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" 2>/dev/null
+  source "$HOME/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
 # Load pnpm completion (built-in pnpm commands - after zsh-autocomplete)
 if command -v pnpm &> /dev/null; then
-  source <(pnpm completion zsh) 2>/dev/null
+  source <(pnpm completion zsh)
 fi
 
 # Load npm/pnpm scripts autocomplete (works with npm, yarn, bun, and pnpm)
 if [ -f "$HOME/.zsh/plugins/zsh-npm-scripts-autocomplete/zsh-npm-scripts-autocomplete.plugin.zsh" ]; then
-  source "$HOME/.zsh/plugins/zsh-npm-scripts-autocomplete/zsh-npm-scripts-autocomplete.plugin.zsh" 2>/dev/null
+  source "$HOME/.zsh/plugins/zsh-npm-scripts-autocomplete/zsh-npm-scripts-autocomplete.plugin.zsh"
   # Optional: Invoke selected script with a single Enter/Return press
-  zmodload -i zsh/complist 2>/dev/null
-  bindkey -M menuselect '^M' .accept-line 2>/dev/null
+  zmodload -i zsh/complist
+  bindkey -M menuselect '^M' .accept-line
 fi
 
 
@@ -100,7 +100,7 @@ fi
 
 # Glab completion (conditional - only if glab is installed)
 if command -v glab &> /dev/null; then
-  source <(glab completion -s zsh) 2>/dev/null
+  source <(glab completion -s zsh)
 fi
 
 # ============================================================================
@@ -253,8 +253,8 @@ gtb() {
     return 1
   fi
 
-  if [[ "$2" != "no" ]] && [[ "$(pwd)" == /Users/lukestorry/Developer/frontier-platform* ]]; then
-    cd /Users/lukestorry/Developer/frontier-platform
+  if [[ "$2" != "no" ]] && [[ "$(pwd)" == "$HOME/Developer/frontier-platform"* ]]; then
+    cd "$HOME/Developer/frontier-platform"
     changeset "$1"
     cd -
   fi
