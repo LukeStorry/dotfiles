@@ -31,15 +31,18 @@ fpath=(~/.zfunc ~/.docker/completions $fpath)
 # ============================================================================
 # ZSH Plugins
 # ============================================================================
-# Load zsh-autocomplete FIRST (must be before any compdef calls, per README)
-# This replaces compinit and provides enhanced autocomplete
-if [ -d "$HOME/.zsh/plugins/zsh-autocomplete" ]; then
-  source "$HOME/.zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
-fi
-
-# Load fast-syntax-highlighting (must be before prompt)
+# Load fast-syntax-highlighting BEFORE zsh-autocomplete: otherwise FSH tries to
+# wrap autocomplete's menu-search/recent-paths widgets and prints "unhandled ZLE
+# widget" warnings. Loading it first means those widgets don't exist yet when FSH
+# binds, and autocomplete loading after leaves FSH's highlighting hooks intact.
 if [ -d "$HOME/.zsh/plugins/fast-syntax-highlighting" ]; then
   source "$HOME/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+fi
+
+# Load zsh-autocomplete (must be before any compdef calls, per README).
+# This replaces compinit and provides enhanced autocomplete.
+if [ -d "$HOME/.zsh/plugins/zsh-autocomplete" ]; then
+  source "$HOME/.zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 fi
 
 # Load zsh-autosuggestions (command suggestions based on history)
