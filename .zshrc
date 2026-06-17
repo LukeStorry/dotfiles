@@ -178,6 +178,7 @@ alias dxi='pnpm dlx @facultyai/dmx-cli install'  # DMX CLI install
 alias dxc='pnpm dlx @facultyai/dmx-cli clean'  # DMX CLI clean
 alias cdd='cd dmx/packages/dmx-console'  # CD DMX console
 alias fk='f -y'  # f yes (auto-confirm)
+alias ggg='gs rs && gs sr && gs ss'
 
 # ============================================================================
 # Functions
