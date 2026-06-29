@@ -20,8 +20,17 @@ export EDITOR="code -w"
 export REACT_EDITOR=code
 export PRISMA_BINARY_TARGETS='["native"]'
 
-# NVM Configuration (set once, loaded lazily)
+# NVM Configuration
+# Put the default node's bin on PATH directly. This is instant, whereas
+# `nvm use default` runs nvm's version-resolution machinery (~6s).
+# Must run before the node-dependent completions below (e.g. pnpm).
 export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/alias/default" ]; then
+  __nvm_default="$(<"$NVM_DIR/alias/default")"
+  [ -d "$NVM_DIR/versions/node/v${__nvm_default#v}/bin" ] &&
+    export PATH="$NVM_DIR/versions/node/v${__nvm_default#v}/bin:$PATH"
+  unset __nvm_default
+fi
 
 # ============================================================================
 # Completions
@@ -74,10 +83,14 @@ zstyle ':completion:*' completer _expand_alias _complete _ignored
 # ============================================================================
 # NVM & Cargo
 # ============================================================================
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-# Activate default Node version so node is available in PATH
-[ -s "$NVM_DIR/alias/default" ] && nvm use default --silent >/dev/null 2>&1
+# Sourcing nvm is slow, so defer it: load on the first `nvm` call.
+# Default node is already on PATH from the NVM Configuration block above.
+nvm() {
+  unset -f nvm
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  nvm "$@"
+}
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # ============================================================================
@@ -182,11 +195,77 @@ alias dxc='pnpm dlx @facultyai/dmx-cli clean'  # DMX CLI clean
 alias cdd='cd dmx/packages/dmx-console'  # CD DMX console
 alias fk='f -y'  # f yes (auto-confirm)
 alias ggg='gs rs && gs sr && gs ss'
-alias cpwd='pwd | tr -d "\\n" | pbcopy'  # Copy current directory path to clipboard
+alias cpwd='pwd | tr -d "\n" | pbcopy'  # Copy current directory path to clipboard
 
 # ============================================================================
 # Functions
 # ============================================================================
+
+# Format stdin if it looks like JSON/JS object-literal; otherwise pass through.
+format() {
+  local input
+  input=$(cat)
+
+  if [[ -z "$input" ]]; then
+    return
+  fi
+
+  if hash node 2>/dev/null; then
+    node -e '
+const vm = require("vm")
+const input = process.argv[1]
+
+let parsed
+
+try {
+  parsed = JSON.parse(input)
+} catch (_jsonErr) {
+  try {
+    // Fallback for JS-style object literals like {a:4,b:"kk"}.
+    parsed = vm.runInNewContext(`(${input})`)
+  } catch (_jsErr) {
+    process.stdout.write(input)
+    process.exit(0)
+  }
+}
+
+console.dir(parsed, {
+  depth: null,
+  colors: true
+})
+' "$input"
+  elif hash jq 2>/dev/null; then
+    echo "$input" | jq . 2>/dev/null || echo "$input"
+  else
+    echo "$input"
+  fi
+}
+
+# Send a macOS notification. Accepts either piped text or an optional message.
+notify() {
+  local msg
+
+  if [[ -t 0 ]]; then
+    msg=${*:-"Command completed"}
+  else
+    msg=$(cat)
+    msg=${msg:-${*:-"Command completed"}}
+  fi
+
+  if hash osascript 2>/dev/null; then
+    osascript -e "display notification \"${msg//\"/\\\"}\" with title \"Terminal\""
+  else
+    echo "$msg"
+  fi
+
+  if hash afplay 2>/dev/null; then
+    afplay /System/Library/Sounds/Ping.aiff >/dev/null 2>&1
+  elif hash osascript 2>/dev/null; then
+    osascript -e 'beep'
+  else
+    printf '\a'
+  fi
+}
 
 
 # Prune: Delete local branches that track remote branches that no longer exist
